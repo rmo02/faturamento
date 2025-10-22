@@ -81,7 +81,7 @@ export default function MultiSelectFilter({ label, options, selected, onChange, 
                   key={option}
                   type="button"
                   onClick={() => toggleOption(option)}
-                  className="w-full px-4 py-2.5 text-sm text-left hover:bg-muted/50 transition-colors flex items-center justify-between gap-2"
+                  className="w-full text-white px-4 py-2.5 text-sm text-left hover:bg-muted/50 transition-colors flex items-center justify-between gap-2"
                 >
                   <span className="truncate">{option}</span>
                   {selected.includes(option) && <Check className="h-4 w-4 text-primary flex-shrink-0" />}

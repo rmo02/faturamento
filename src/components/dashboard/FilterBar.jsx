@@ -10,18 +10,18 @@ export default function FilterBar() {
   const hasActiveFilters = Object.values(filters).some((value) => Array.isArray(value) && value.length > 0)
 
   return (
-    <div className="relative z-10 rounded-2xl border border-border/50 bg-gradient-to-br from-card to-card/80 p-6 shadow-lg backdrop-blur-sm">
+    <div className="relative z-10 rounded-xl border border-slate-700/50 bg-slate-800/60 backdrop-blur-sm p-6 shadow-lg">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="rounded-xl bg-primary/10 p-2.5">
-            <Filter className="h-5 w-5 text-primary" />
+          <div className="rounded-lg bg-blue-600 p-2.5 shadow-lg shadow-blue-600/30">
+            <Filter className="h-5 w-5 text-white" />
           </div>
-          <h3 className="text-lg font-semibold text-foreground">Filtros Avançados</h3>
+          <h3 className="text-lg font-semibold text-slate-100">Filtros Avançados</h3>
         </div>
         {hasActiveFilters && (
           <button
             onClick={resetFilters}
-            className="flex items-center gap-2 rounded-lg bg-destructive/10 px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive/20 transition-all duration-200"
+            className="flex items-center gap-2 rounded-lg bg-red-600/20 border border-red-600/30 px-4 py-2 text-sm font-medium text-red-400 hover:bg-red-600/30 transition-all duration-200"
           >
             <X className="h-4 w-4" />
             Limpar filtros

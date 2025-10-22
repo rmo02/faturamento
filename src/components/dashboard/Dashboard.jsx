@@ -9,7 +9,7 @@ import RevenueByPeriodChart from "../charts/RevenueByPeriodChart"
 import RevenueBySegmentChart from "../charts/RevenueBySegmentChart"
 import TopClientsChart from "../charts/TopClientsChart"
 import DataTable from "../table/DataTable"
-import { Upload, Table } from "lucide-react"
+import { Upload, Table, TrendingUp } from "lucide-react"
 import { useState } from "react"
 
 export default function Dashboard() {
@@ -30,27 +30,32 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {!rawData || rawData.length === 0 ? (
         <UploadSection />
       ) : (
         <>
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-bold text-foreground">Dashboard de Faturamento</h2>
-              <p className="text-muted-foreground mt-1">Visualização e análise de dados</p>
+          <div className="flex items-center justify-between bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50 shadow-xl">
+            <div className="flex items-center gap-4">
+              <div className="rounded-lg bg-blue-600 p-3 shadow-lg shadow-blue-600/30">
+                <TrendingUp className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-slate-100">Dashboard de Faturamento</h2>
+                <p className="text-sm text-slate-400 mt-0.5">Visualização e análise de dados em tempo real</p>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <button
                 onClick={() => setShowTable(!showTable)}
-                className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+                className="group flex items-center gap-2 rounded-lg border border-slate-600 bg-slate-800/80 backdrop-blur-sm px-4 py-2.5 text-sm font-medium text-slate-200 hover:bg-slate-700 hover:border-slate-500 transition-all duration-200"
               >
                 <Table className="h-4 w-4" />
                 {showTable ? "Ocultar Tabela" : "Ver Tabela"}
               </button>
               <button
                 onClick={handleNewUpload}
-                className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="group flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/30 transition-all duration-200"
               >
                 <Upload className="h-4 w-4" />
                 Novo Upload
@@ -72,8 +77,11 @@ export default function Dashboard() {
           </div>
 
           {showTable && (
-            <div>
-              <h3 className="text-xl font-semibold text-foreground mb-4">Dados Detalhados</h3>
+            <div className="space-y-4 bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50 shadow-xl">
+              <div className="flex items-center gap-3">
+                <div className="h-1 w-1 rounded-full bg-blue-500" />
+                <h3 className="text-xl font-semibold text-slate-100">Dados Detalhados</h3>
+              </div>
               <DataTable data={filteredData} />
             </div>
           )}

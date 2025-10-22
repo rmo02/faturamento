@@ -35,11 +35,18 @@ export function parseExcelFile(file) {
 
         const allData = []
 
-        // Iterar por todas as abas (sheets) - cada aba é um executivo
-        workbook.SheetNames.forEach((sheetName) => {
-          const worksheet = workbook.Sheets[sheetName]
+        workbook.SheetNames.forEach((sheetName, index) => {
+          const sheet = workbook.Sheets[sheetName]
+          const sheetInfo = workbook.Workbook?.Sheets?.[index]
+
+          // Ignorar abas ocultas
+          if (sheetInfo?.Hidden) {
+            console.log(`[v0] Ignorando aba oculta: ${sheetName}`)
+            return
+          }
+
           // raw: true para ler valores brutos (números em vez de texto formatado)
-          const sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1, raw: true, defval: "" })
+          const sheetData = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: true, defval: "" })
 
           const headers = [
             "CLIENTES",
@@ -81,18 +88,18 @@ export function parseExcelFile(file) {
 
 function sortMonths(months) {
   const monthOrder = {
-    JANEIRO: 1,
-    FEVEREIRO: 2,
-    MARÇO: 3,
-    ABRIL: 4,
-    MAIO: 5,
-    JUNHO: 6,
-    JULHO: 7,
-    AGOSTO: 8,
-    SETEMBRO: 9,
-    OUTUBRO: 10,
-    NOVEMBRO: 11,
-    DEZEMBRO: 12,
+    JAN: 1,
+    FEV: 2,
+    MAR: 3,
+    ABR: 4,
+    MAI: 5,
+    JUN: 6,
+    JUL: 7,
+    AGO: 8,
+    SET: 9,
+    OUT: 10,
+    NOV: 11,
+    DEZ: 12,
   }
 
   return months.sort((a, b) => {
@@ -140,9 +147,9 @@ export function calculateMetrics(data) {
     return sum + parseCurrency(item.VALOR_INVESTIMENTO)
   }, 0)
 
-  const totalClientes = new Set(data.map((item) => item.CLIENTES)).size
-  const totalExecutivos = new Set(data.map((item) => item.EXECUTIVO)).size
-  const totalVeiculos = new Set(data.map((item) => item.VEICULOS)).size
+  const totalClientes = new Set(data.map((item) => item.CLIENTES).filter(Boolean)).size
+  const totalExecutivos = new Set(data.map((item) => item.EXECUTIVO).filter(Boolean)).size
+  const totalVeiculos = new Set(data.map((item) => item.VEICULOS).filter(Boolean)).size
 
   return {
     totalPermuta,
