@@ -1,10 +1,11 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { Check, ChevronDown } from "lucide-react"
+import { Check, ChevronDown, Search } from "lucide-react"
 
 export default function MultiSelectFilter({ label, options, selected, onChange, color }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
   const dropdownRef = useRef(null)
 
   useEffect(() => {
@@ -26,8 +27,10 @@ export default function MultiSelectFilter({ label, options, selected, onChange, 
     }
   }
 
+  const filteredOptions = options.filter((option) => String(option).toLowerCase().includes(searchTerm.toLowerCase()))
+
   const selectAll = () => {
-    onChange(options)
+    onChange(filteredOptions)
   }
 
   const clearAll = () => {
@@ -58,7 +61,21 @@ export default function MultiSelectFilter({ label, options, selected, onChange, 
         </button>
 
         {isOpen && (
-          <div className="absolute z-[9999] mt-2 w-full rounded-lg border border-border bg-card shadow-lg max-h-64 overflow-hidden flex flex-col">
+          <div className="absolute z-[9999] mt-2 w-full rounded-lg border border-border bg-card shadow-lg max-h-80 overflow-hidden flex flex-col">
+            <div className="p-3 border-b border-border bg-muted/30">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Buscar..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2 text-sm rounded-md border border-input bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </div>
+            </div>
+
             <div className="flex items-center justify-between gap-2 p-2 border-b border-border bg-muted/50">
               <button
                 type="button"
@@ -75,18 +92,22 @@ export default function MultiSelectFilter({ label, options, selected, onChange, 
                 Limpar
               </button>
             </div>
-            <div className="overflow-y-auto">
-              {options.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => toggleOption(option)}
-                  className="w-full text-white px-4 py-2.5 text-sm text-left hover:bg-muted/50 transition-colors flex items-center justify-between gap-2"
-                >
-                  <span className="truncate">{option}</span>
-                  {selected.includes(option) && <Check className="h-4 w-4 text-primary flex-shrink-0" />}
-                </button>
-              ))}
+            <div className="overflow-y-auto max-h-48">
+              {filteredOptions.length > 0 ? (
+                filteredOptions.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => toggleOption(option)}
+                    className="w-full px-4 text-white py-2.5 text-sm text-left hover:bg-muted/50 transition-colors flex items-center justify-between gap-2"
+                  >
+                    <span className="truncate">{option}</span>
+                    {selected.includes(option) && <Check className="h-4 w-4 text-primary flex-shrink-0" />}
+                  </button>
+                ))
+              ) : (
+                <div className="px-4 py-6 text-sm text-muted-foreground text-center">Nenhum resultado encontrado</div>
+              )}
             </div>
           </div>
         )}

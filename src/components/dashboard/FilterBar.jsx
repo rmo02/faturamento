@@ -29,7 +29,15 @@ export default function FilterBar() {
         )}
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+        <MultiSelectFilter
+          label="Cliente"
+          options={uniqueValues.clientes}
+          selected={filters.CLIENTES}
+          onChange={(selected) => updateFilters({ CLIENTES: selected })}
+          color="cyan"
+        />
+
         <MultiSelectFilter
           label="Executivo"
           options={uniqueValues.executivos}

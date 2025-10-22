@@ -11,6 +11,7 @@ export function DataProvider({ children }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [filters, setFilters] = useState({
+    CLIENTES: [],
     EXECUTIVO: [],
     PERIODO: [],
     ANO: [],
@@ -45,6 +46,7 @@ export function DataProvider({ children }) {
 
   const resetFilters = () => {
     const defaultFilters = {
+      CLIENTES: [],
       EXECUTIVO: [],
       PERIODO: [],
       ANO: [],
@@ -58,6 +60,7 @@ export function DataProvider({ children }) {
   const metrics = calculateMetrics(filteredData)
 
   const uniqueValues = {
+    clientes: getUniqueValues(rawData, "CLIENTES"),
     executivos: getUniqueValues(rawData, "EXECUTIVO"),
     periodos: getUniqueValues(rawData, "PERIODO"),
     anos: getUniqueValues(rawData, "ANO"),
